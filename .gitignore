@@ -1,0 +1,8 @@
+# Sensitive info
+*/.secret
+*/.infura_key
+*/.etherscan_key
+*/.env
+
+# Build folder
+build/
