@@ -23,6 +23,7 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 const fs = require('fs');
 const infuraKey = fs.readFileSync("./env/.infura_key").toString().trim();
 const etherscanKey = fs.readFileSync("./env/.etherscan_key").toString().trim();
+const maticvigilKey = fs.readFileSync("./env/.maticvigil_key").toString().trim();
 const mnemonic = fs.readFileSync("./env/.secret").toString().trim();
 const contractOwner = fs.readFileSync("./env/contract_owner").toString().trim();
 
@@ -79,7 +80,7 @@ module.exports = {
       network_id: 5,       // Goerli's id
       from: contractOwner,  // Owner
       gas: 8000000,        // Use 8 million for contract deployment on Goerli
-      gasPrice: 20000000000000,  // 2000 gwei on Goerli
+      gasPrice: 500000000000,  // 500 gwei on Goerli
       confirmations: 2,    // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
@@ -95,7 +96,7 @@ module.exports = {
       skipDryRun: false     // Skip dry run before migrations? (default: false for public nets )
     },
     mumbai: {
-      provider: () => new HDWalletProvider(mnemonic, `https://polygon-mumbai.infura.io/v3/${infuraKey}`),
+      provider: () => new HDWalletProvider(mnemonic, `wss://rpc-mumbai.maticvigil.com/ws/v1/${maticvigilKey}`),
       network_id: 80001,
       from: contractOwner,
       confirmations: 2,
@@ -103,7 +104,7 @@ module.exports = {
       skipDryRun: false
     },
     maticmainnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://polygon-mainnet.infura.io/v3/${infuraKey}`),
+      provider: () => new HDWalletProvider(mnemonic, `wss://rpc-mainnet.maticvigil.com/ws/v1/${maticvigilKey}`),
       network_id: 137,
       from: contractOwner,
       confirmations: 2,

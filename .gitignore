@@ -3,6 +3,7 @@
 */.infura_key
 */.etherscan_key
 */.env
+*/.maticvigil_key
 
 # Build folder
 build/
