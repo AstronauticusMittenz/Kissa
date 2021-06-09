@@ -106,8 +106,8 @@ pragma solidity 0.8.4;
         uint256 mittenzAllowance = IERC20(_mittenzToken).allowance(depositor, address(this));
         require(mittenzAllowance >= amountInMittenz, "MITTN amount is above amount approved by user.");
         uint256 amountInKissa = amountInMittenz / _MittenzToKissaExRate;
-        IERC20(_mittenzToken).safeTransferFrom(depositor, address(this), amountInMittenz);
         _floatingReserve += amountInKissa;
+        IERC20(_mittenzToken).safeTransferFrom(depositor, address(this), amountInMittenz);
         _mint(depositor, amountInKissa);
         emit Exchange(depositor, _mittenzToken, amountInMittenz, address(this), amountInKissa);
     }
@@ -130,9 +130,9 @@ pragma solidity 0.8.4;
             "KISSA to MITTN conversion: Conversion of more than 100 KISSA in a single transaction cannot proceed due to 40,000 MITTN transaction limit.");
         require(amountInKissa <= _floatingReserve, "KISSA to MITTN conversion: Amount exceeds MITTN reserves floating as KISSA.");
         uint256 amountInMittenz = amountInKissa * _MittenzToKissaExRate;
+        _floatingReserve -= amountInKissa;
         address payable withdrawer = _msgSender();
         _burn(withdrawer, amountInKissa);
-        _floatingReserve -= amountInKissa;
         IERC20(_mittenzToken).safeTransfer(withdrawer, amountInMittenz);
         emit Exchange(withdrawer, address(this), amountInKissa, _mittenzToken, amountInMittenz);
     }
