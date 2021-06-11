@@ -13,7 +13,7 @@ const testUser = "0x9805539dB3C2887075F185915bf371ccFa8a3402";
 // Set up HDWallet providers for transactions that need to  be signed.
 const goerliHDWalletProvider = new HDWalletProvider(
     mnemonic,
-    `wss://goerli.infura.io/ws/v3/${infuraKey}`
+    `https://goerli.infura.io/v3/${infuraKey}`
     );
 const mumbaiHDWalletProvider = new HDWalletProvider(
     mnemonic,
@@ -38,11 +38,10 @@ const goerliMintableERC20PredicateProxy = fs.readFileSync(
 const kissaMumbaiToken = "0xb73F00feEAFc232C247516AA180261fEc0E909fc";
 
 // Amount we will withdraw from Mumbai to Goerli.
-const withdrawalAmount = "4700000000000000000";  // 4.7 KISSA (in wei)
+const withdrawalAmount = "10000000000000000000";  // 10 KISSA (in wei)
 
-// Goerli is expensive these days.
-const goerliGasPrice = "10000000000000";  // 10,000 gwei (in wei)
-const goerliGasAmount = "200000";  // Set 200,000 gas limit.
+const goerliGasPrice = "500000000000";  // 500 gwei (in wei)
+const goerliGasAmount = "8000000";  // Set 8,000,000 gas limit.
 
 
 const maticPOSClient = new MaticPOSClient({
