@@ -80,7 +80,7 @@ module.exports = {
       network_id: 5,       // Goerli's id
       from: contractOwner,  // Owner
       gas: 8000000,        // Use 8 million for contract deployment on Goerli
-      gasPrice: 500000000000,  // 500 gwei on Goerli
+      gasPrice: 2000000000000,  // 500 gwei on Goerli
       confirmations: 2,    // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )

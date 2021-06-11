@@ -4,6 +4,7 @@
 */.etherscan_key
 */.env
 */.maticvigil_key
+*/.user_test
 
 # Build folder
 build/
