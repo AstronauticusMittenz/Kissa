@@ -61,17 +61,18 @@ const maticPOSClient = new MaticPOSClient({
 
 async function withdraw(amount) {
     try {
-        let amountInEth = mumbaiWeb3.utils.fromWei(amount, "ether");
+        let amountInEth = Web3.utils.fromWei(amount, "ether");
         console.log(`Burning ${amountInEth} KISSA on Mumbai...`);
         let tx = await maticPOSClient.burnERC20(
             kissaMumbaiToken,
             amount
             );
-        console.log("Burned tokens on Mumbai.");
+        console.log("Burned tokens on Mumbai. Burn tx hash:");
         console.log(tx.transactionHash);
         return tx.transactionHash;
     } catch (e) {
         console.error(e);
+        process.exit(1);
     }
 }
 
@@ -79,7 +80,7 @@ async function withdraw(amount) {
 // rootChainAddress - root chain proxy address on Ethereum
 // This check can take quite a long time to run (> 30 min).
 async function checkInclusion(txHash, rootChainAddress) {
-    console.log(`Waiting for verification of checkpoint inclusion of burn tx hash ${txHash}...`);
+    console.log(`Waiting for verification of checkpoint inclusion of burn with tx hash\n${txHash}...`);
     let txDetails = await mumbaiWeb3.eth.getTransactionReceipt(txHash);
 
     block = txDetails.blockNumber;
@@ -113,13 +114,14 @@ async function checkInclusion(txHash, rootChainAddress) {
 // otherwise it might take a long time or fail to mine.
 async function exitTokens(burnHash) {
     try {
-        console.log(`Exiting tokens with burn tx hash ${burnHash}...`);
+        console.log(`Exiting tokens with burn tx hash\n${burnHash}...`);
         const tx = await maticPOSClient.exitERC20(burnHash);
         console.log("Exited tokens on Goerli.");
         console.log(tx.transactionHash);
         return tx.transactionHash;
     } catch (e) {
         console.error(e);
+        process.exit(1);
     }
 }
 
@@ -127,7 +129,6 @@ async function exitTokens(burnHash) {
 // Withdraw tokens on Mumbai, 
 // verify checkpoint inclusion,
 // exit tokens on Goerli.
-
 withdraw(withdrawalAmount).then((txHash) => {
     return [checkInclusion(txHash, goerliRootChainProxy),
     txHash];
@@ -138,7 +139,9 @@ withdraw(withdrawalAmount).then((txHash) => {
     goerliWeb3Provider.disconnect();
     return burnHash;
 }).catch((err) => {
+    console.log("Error:")
     console.log(err);
+    process.exit(1);
 }).then(async (burnHash) => {
     await exitTokens(burnHash);
 }).then(() => process.exit(0));
