@@ -45,18 +45,11 @@ pragma solidity 0.8.4;
     uint256 private _availableReserve;
 
     // Mr Mittenz contract address.
-    // address constant private _mittenzToken = 0x8Da04952f9e2c88fDE420cf8227BD6b259bD60d0;  //Ropsten
-    address constant private _mittenzToken = 0x94a871F3107BE9f68C368828327b242fc691959E;  //Goerli
-    // address constant private _mittenzToken = 0xb73F00feEAFc232C247516AA180261fEc0E909fc;  //Ethereum Mainnet
+    address constant private _mittenzToken = 0xb73F00feEAFc232C247516AA180261fEc0E909fc;  //Ethereum Mainnet
 
     // Conversion can start on 01 Oct 2021 at 00:00:00 UTC
     // (seconds since Unix epoch)
-    // REAL
-    // uint constant private _convertibilityStartTimeSecs = 1633046400;
-    
-    // TEST/DEBUG on Ropsten
-    // For testing, set start time to 7 Jun 2021 at 22:00:00 UTC
-    uint constant private _testConvertibilityStartTimeSecs = 1623103200;
+    uint constant private _convertibilityStartTimeSecs = 1633046400;
 
     event Exchange(
         address indexed exchanger,
@@ -95,10 +88,7 @@ pragma solidity 0.8.4;
     function exchangeMittenzForKissa(uint256 amountInMittenz)
         external
     {
-        // TEST/DEBUG on Ropsten
-        require(block.timestamp > _testConvertibilityStartTimeSecs, "MITTN to KISSA conversion allowed starting 7 JUNE 2021 at 01:00 UTC.");
-        // REAL
-        // require(block.timestamp > _convertibilityStartTimeSecs, "MITTN to KISSA conversion allowed starting 1 OCT 2021 at 00:00 UTC.");
+        require(block.timestamp > _convertibilityStartTimeSecs, "MITTN to KISSA conversion allowed starting 1 OCT 2021 at 00:00 UTC.");
         require(amountInMittenz >= 400000, "Must convert at least 400,000 MITTN wei");
         require(amountInMittenz <= 40000 * 10**18,
             "MITTN to KISSA conversion: Conversion of more than 40,000 MITTN in a single transaction cannot proceed due to 40,000 MITTN transaction limit.");
@@ -121,10 +111,7 @@ pragma solidity 0.8.4;
      * @dev Unlocks Mittenz.
      */
     function exchangeKissaForMittenz(uint256 amountInKissa) external {
-        // TEST/DEBUG on Ropsten
-        require(block.timestamp > _testConvertibilityStartTimeSecs, "KISSA to MITTN conversion allowed starting 7 JUNE 2021 at 01:00 UTC.");
-        // REAL
-        // require(block.timestamp > _convertibilityStartTimeSecs, "KISSA to MITTN conversion allowed starting 1 OCT 2021 at 00:00 UTC.");
+        require(block.timestamp > _convertibilityStartTimeSecs, "KISSA to MITTN conversion allowed starting 1 OCT 2021 at 00:00 UTC.");
         require(amountInKissa >= 1000, "Must convert at least 1,000 KISSA wei");
         require(amountInKissa <= 100 * 10**18,
             "KISSA to MITTN conversion: Conversion of more than 100 KISSA in a single transaction cannot proceed due to 40,000 MITTN transaction limit.");
